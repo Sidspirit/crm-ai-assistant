@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         ITSoft CRM2 AI Assistant
 // @namespace    http://tampermonkey.net/
-// @version      1.3
+// @version      1.4
 // @description  Автоматизация создания задач и ответов в CRM2 с помощью Gemini API
-// @author       Sidspirit
+// @author       Sergei Tikhomirov
 // @match        https://crm.itsoft.ru/*
-// @connect       crm-ai-assistant.onrender.com
+// @connect      crm-ai-assistant.onrender.com
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
 
@@ -13,6 +13,7 @@
     'use strict';
   
     const BACKEND_URL = 'https://crm-ai-assistant.onrender.com/api/process-thread';
+    const API_SECRET = 'my_super_secret_key_123';
   
     function parseCRMContext() {
       const h1Element = document.querySelector('h1.title') || document.querySelector('h1');
@@ -214,7 +215,10 @@
       GM_xmlhttpRequest({
         method: 'POST',
         url: BACKEND_URL,
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-Secret': API_SECRET
+        },
         data: JSON.stringify(payload),
         onload: function (response) {
           buttonEl.innerText = originalText;
@@ -226,7 +230,7 @@
             applyResponseToUI(result, mode);
           } else {
             console.error('[AI Assistant] Server Error:', response.responseText);
-            alert('Ошибка бэкенда: ' + response.statusText);
+            alert('Ошибка бэкенда (' + response.status + '): ' + response.statusText);
           }
         },
         onerror: function (err) {
