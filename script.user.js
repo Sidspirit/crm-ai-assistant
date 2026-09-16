@@ -4,7 +4,7 @@
 // @version      1.4
 // @description  Автоматизация создания задач и ответов в CRM2 с помощью Gemini API
 // @author       Sergei Tikhomirov
-// @match        https://crm.itsoft.ru/*
+// @match        https://crm.itsoft.ru/crm2/mail/*
 // @connect      crm-ai-assistant.onrender.com
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
