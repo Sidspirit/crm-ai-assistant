@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         ITSoft CRM2 AI Assistant
 // @namespace    http://tampermonkey.net/
-// @version      1.4
+// @version      1.4.2
 // @description  Автоматизация создания задач и ответов в CRM2 с помощью Gemini API
 // @author       Sergei Tikhomirov
 // @match        https://crm.itsoft.ru/crm2/mail/*
+// @match        https://crm.itsoft.ru/crm2/ticket/*
 // @connect      crm-ai-assistant.onrender.com
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
@@ -243,6 +244,14 @@
     }
   
     function initUI() {
+      // Проверяем текущий адрес страницы
+    const url = window.location.href;
+    // Если в ссылке нет слова 'branch_id' (ни branch_id=..., ни w_branch_id_1=...),
+    // значит мы на разводящей странице. Прерываем выполнение!
+    if (!url.includes('branch_id')) {
+      return;
+    }
+      // Защита от дублей (чтобы не рисовалось несколько панелей)
       if (document.getElementById('ai-assistant-panel')) return;
   
       const container = document.createElement('div');
